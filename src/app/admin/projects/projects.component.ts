@@ -15,7 +15,8 @@ export class ProjectsComponent implements OnInit{
   editIndex:any=null;
   deleteProject:Projects = new Projects();
   deleteIndex:any=null;
-
+  searchBy:string="ProjectName";
+  searchText:string='';
 
   constructor(private projectService:ProjectsService){
 
@@ -31,24 +32,27 @@ export class ProjectsComponent implements OnInit{
 
 
   onSaveClick(){
-    this.projectService.insertProject(this.newProject).subscribe((response:any)=>{
+    this.projectService.insertProject(this.newProject).subscribe({
+      next:(response:any)=>{
       
-      //Add Project to grid
-      const p:Projects = new Projects();
-      p.projectID = response.projectID;
-      p.projectName= response.projectName
-      p.dateOfStart = response.dateOfStart;
-      p.teamSize = response.teamSize;
-      this.projects.push(p)
-
-      this.newProject.projectID=null;
-      this.newProject.projectName=null;
-      this.newProject.dateOfStart=null;
-      this.newProject.teamSize=null;
-
-    }, ()=>{
+        //Add Project to grid
+        const p:Projects = new Projects();
+        p.projectID = response.projectID;
+        p.projectName= response.projectName
+        p.dateOfStart = response.dateOfStart;
+        p.teamSize = response.teamSize;
+        this.projects.push(p)
+  
+        this.newProject.projectID=null;
+        this.newProject.projectName=null;
+        this.newProject.dateOfStart=null;
+        this.newProject.teamSize=null;
+  
+      }, 
+      error:()=>{
      
-    })
+      }
+  })
   }
 
 
@@ -94,8 +98,16 @@ export class ProjectsComponent implements OnInit{
         this.deleteProject.projectName=null;
         this.deleteProject.dateOfStart=null;
         this.deleteProject.teamSize=null;
+      })
+  }
+
+  onSearchClick(){
+    this.projectService.SearchProjects(this.searchBy, this.searchText).subscribe(
+      (response:Projects[]) => {
+        this.projects= response;
       },
-       (error)=>{console.log(error)})
+      () => { }
+    )
   }
   
 }
