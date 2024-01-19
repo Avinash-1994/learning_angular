@@ -17,9 +17,7 @@ export class ProjectsService {
         data[i].teamSize = data[i].teamSize * 100;
       }
       return data;
-    }))
-    
-    ;
+    }));
   }
 
   insertProject(newProject:Projects):Observable<Projects[]>{
