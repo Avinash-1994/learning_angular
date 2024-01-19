@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map} from 'rxjs/operators';
 import { Projects } from './projects';
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,13 @@ export class ProjectsService {
   constructor(private httpClient:HttpClient) { }
 
   getAllProjects(): Observable<Projects[]>{
-    return this.httpClient.get<Projects[]>(this.urlPrefix + "/api/projects", {responseType:"json"});
+    return this.httpClient.get<Projects[]>(this.urlPrefix + "/api/projects", {responseType:"json"})
+    .pipe(map((data:Projects[])=>{
+      for(let i = 0; i< data.length; i++){
+        data[i].teamSize = data[i].teamSize * 100;
+      }
+      return data;
+    }));
   }
 
   insertProject(newProject:Projects):Observable<Projects[]>{
@@ -23,5 +30,7 @@ export class ProjectsService {
   deleteProject(projectID:number):Observable<string>{
     return this.httpClient.delete<string>(this.urlPrefix + "/api/projects?projectID=" + projectID)
   }
-  
+  SearchProjects(searchBy:string, searchText:string): Observable<Projects[]>{
+    return this.httpClient.get<Projects[]>(this.urlPrefix+ "/api/projects/search/"+ searchBy + "/" + searchText, {responseType:"json"})
+  }
 }
