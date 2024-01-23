@@ -18,13 +18,13 @@ export class gaurdService{
 
 
     var token = sessionStorage.getItem("currentUser")? JSON.parse(sessionStorage.getItem('currentUser') as any).token: null;
-
+    console.log(this.loginService.isAuthenticated())
     if(this.loginService.isAuthenticated() || this.jwtHelperService.decodeToken(token).role == next.data['expectedRole']){
       return true;
-    }else{
-      this.router.navigateByUrl('/login')
-      return false;
     }
+    this.router.navigateByUrl('/login')
+    return false;
+    
   }
 
   

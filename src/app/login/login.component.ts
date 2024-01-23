@@ -16,11 +16,11 @@ export class LoginComponent implements OnInit {
 
   }
   ngOnInit() {
+    console.log(this.loginService)
     
   }
   onLoginClick(event:any){
 
-    console.log(this.loginService)
     this.loginService.Login(this.loginViewModel).subscribe({
       next: (response)=>{
           this.router.navigateByUrl('/Dashboard')

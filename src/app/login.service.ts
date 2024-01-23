@@ -17,33 +17,29 @@ export class LoginService
   {
   }
 
-  public currentUserName: any = null;
+  currentUserName: any = null;
 
   public Login(loginViewModel: LoginViewModel): Observable<any>
   {
     this.httpClient = new HttpClient(this.httpBackend);
-    return this.httpClient.post<any>(this.urlPrefix + "/authenticate", loginViewModel, { responseType: "json" })
-      .pipe(map(user =>{
-        console.log(user.userName)
-        if (user)
+    return this.httpClient.post<any>(this.urlPrefix + "/authenticate", loginViewModel, { responseType: "json", observe: "response" })
+      .pipe(map(response =>
+      {
+        if (response)
         {
-          this.currentUserName = user.userName;
-          sessionStorage['currentUser'] = JSON.stringify(user);
+          console.log(this.currentUserName )
+          this.currentUserName = response.body.userName;
+          sessionStorage['currentUser'] = JSON.stringify(response.body);
+          sessionStorage['XSRFRequestToken'] = response.headers.get("XSRF-REQUEST-TOKEN");
         }
-        return user;
+        return response.body;
       }));
-      console.log(this.currentUserName)
   }
-
-  public Logout()
-  {
-    sessionStorage.removeItem("currentUser");
-    this.currentUserName = null;
-  }
-
   public isAuthenticated(): boolean
   {
     var token = sessionStorage.getItem("currentUser") ? JSON.parse(sessionStorage.getItem("currentUser") as string).token : null;
+
+    console.log()
     if (this.jwtHelperService.isTokenExpired())
     {
       return false; //token is not valid
@@ -53,4 +49,12 @@ export class LoginService
       return true; //token is valid
     }
   }
+
+  public Logout()
+  {
+    sessionStorage.removeItem("currentUser");
+    this.currentUserName = null;
+  }
+
+  
 }

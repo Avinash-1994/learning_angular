@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CanActivateGuardService } from './can-activate-guard.service';
 
 describe('CanActivateGuardService', () => {
-  let service: CanActivateGuardService;
+  let service:any = CanActivateGuardService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
