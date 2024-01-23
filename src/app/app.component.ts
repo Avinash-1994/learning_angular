@@ -8,6 +8,6 @@ import { LoginService } from './login.service';
 })
 export class AppComponent {
   constructor(public loginService:LoginService){
-    console.log(loginService)
+    
   }
 }

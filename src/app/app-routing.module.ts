@@ -4,6 +4,7 @@ import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { AboutComponent } from './admin/about/about.component';
 import { ProjectsComponent } from './admin/projects/projects.component';
 import { LoginComponent } from './login/login.component';
+import { CanActivateGuardService } from './can-activate-guard.service';
 
 const routes: Routes = [
   {
@@ -13,19 +14,29 @@ const routes: Routes = [
   },
   {
     path:'login',
-    component:LoginComponent
+    component:LoginComponent,
+    pathMatch:'full'
   },
   {
     path: 'Dashboard',
-    component:DashboardComponent
+    component:DashboardComponent,
+    canActivate:[CanActivateGuardService],
+    data:{
+      expectedRole:"Admin"
+    }
   },
   {
     path:'About',
-    component:AboutComponent
+    component:AboutComponent,
+    pathMatch:'full'
   },
   {
     path:'projects',
-    component:ProjectsComponent
+    component:ProjectsComponent,
+    canActivate:[CanActivateGuardService],
+    data:{
+      expectedRole:"Admin"
+    }
   },
   {
     path:"**",
