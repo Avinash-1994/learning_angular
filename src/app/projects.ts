@@ -1,3 +1,6 @@
+import { ClientLocation } from './client-location';
+
+
 export class Projects {
     projectID:number |any;
     projectName:string |any;
@@ -6,7 +9,7 @@ export class Projects {
     active:boolean |any;
     status:string |any;
     clientLocationID: number | any;
-    clientLocation:string | any
+    clientLocation:ClientLocation | any
     constructor(){
         this.projectID=null;
         this.projectName=null;

@@ -49,7 +49,7 @@ function authenticateToken(req, res, next) {
 
 //xsrf
 function verifyXsrf(req, res, next) {
-  //console.log("x-xsrf-token", req.headers["x-xsrf-token"]);
+  console.log("x-xsrf-token", req.headers["x-xsrf-token"]);
   if (!req.headers["x-xsrf-token"]) {
     res.sendStatus(401);
   }

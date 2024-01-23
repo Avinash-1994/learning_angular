@@ -55,3 +55,4 @@ export class LoginService
     sessionStorage.removeItem("currentUser");
     this.currentUserName = null;
   }
+}
