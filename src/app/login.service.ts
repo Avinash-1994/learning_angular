@@ -12,19 +12,19 @@ export class LoginService {
 
   constructor(private httpClient:HttpClient) { }
 
-  currentUserName:any='';
+  currentUserName:any=null;
   
   public Login(loginViewModel:LoginViewModel):Observable<any>{
     return this.httpClient.post<any>(this.urlPrefix+'/authenticate', loginViewModel, {responseType:'json'})
     .pipe(map((user)=>{
       if(user){
         console.log(user)
-        this.currentUserName = user.UserName;
+        this.currentUserName = user.userName;
       }
       return user;
     }))
   }
   public Logout(){
-      this.currentUserName='';
+      this.currentUserName=null;
   }
 }
