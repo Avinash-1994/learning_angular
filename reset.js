@@ -29,10 +29,10 @@ data = {
   users: [
     {
       id: 1,
-      UserName: "admin",
+      UserName: "Admin",
       Email: "admin@gmail.com",
       Password: "Admin123#",
-      role: 1,
+      role: "Admin",
     },
   ],
 };

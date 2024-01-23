@@ -22,12 +22,11 @@ export class ProjectsComponent implements OnInit{
 
   }
   ngOnInit(){
-    this.projectService.getAllProjects().subscribe(
-      (response:Projects[])=>{
+    this.projectService.getAllProjects().subscribe({
+      next: (response:Projects[])=>{
         this.projects= response;
-        
       }
-    );
+    });
   }
 
 

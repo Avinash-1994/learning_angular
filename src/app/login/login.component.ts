@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
     
   }
   onLoginClick(event:any){
+
+    console.log(this.loginService)
     this.loginService.Login(this.loginViewModel).subscribe({
       next: (response)=>{
           this.router.navigateByUrl('/Dashboard')
