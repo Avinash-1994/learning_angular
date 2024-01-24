@@ -16,7 +16,7 @@ export class Projects {
         this.dateOfStart=null;
         this.teamSize=null;
         this.active= true;
-        this.status= null;
+        this.status= false;
         this.clientLocationID=null;
         this.clientLocation= new ClientLocation();
     }

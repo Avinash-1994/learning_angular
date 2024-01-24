@@ -29,17 +29,20 @@ export class ProjectsComponent implements OnInit{
     this.projectService.getAllProjects().subscribe({
       next: (response:Projects[])=>{
         this.projects= response;
+        this.showLoading= false;
       }
     });
-    this.clientLocationService.getClientLocation().subscribe({
+    this.clientLocationService.getClientLocations().subscribe({
       next: (responsse)=>{
         this.clientLocations = responsse;
+        
       }
     })
   }
 
 
   onSaveClick(){
+    this.newProject.clientLocation.clientLocationID=0;
     this.projectService.insertProject(this.newProject).subscribe({
       next:(response:any)=>{
       
