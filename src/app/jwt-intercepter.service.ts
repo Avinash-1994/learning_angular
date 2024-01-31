@@ -9,7 +9,7 @@ export class JwtIntercepterService implements HttpInterceptor {
 
   constructor() { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    var currentUser = {token:''}
+    var currentUser = {token:""}
     if(sessionStorage['currentUser'] != null){
       currentUser=JSON.parse(sessionStorage['currentUser'])
     }

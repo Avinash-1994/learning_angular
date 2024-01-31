@@ -7,15 +7,10 @@ import { LoginComponent } from './login/login.component';
 import { CanActivateGuardService } from './can-activate-guard.service';
 
 const routes: Routes = [
-  {
-    path:'',
-    component:LoginComponent,
-    pathMatch:'full'
-  },
+  { path: "", redirectTo: "login", pathMatch: "full" },
   {
     path:'login',
     component:LoginComponent,
-    pathMatch:'full'
   },
   {
     path: 'Dashboard',
@@ -27,8 +22,7 @@ const routes: Routes = [
   },
   {
     path:'About',
-    component:AboutComponent,
-    pathMatch:'full'
+    component:AboutComponent
   },
   {
     path:'projects',
@@ -37,11 +31,6 @@ const routes: Routes = [
     data:{
       expectedRole:"Admin"
     }
-  },
-  {
-    path:"**",
-    redirectTo:"login",
-    pathMatch:"full"
   }
 ];
 
