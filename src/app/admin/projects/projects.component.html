@@ -1,11 +1,22 @@
-<h1>Projects</h1>
+<h1>
+    Projects
+    <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true" style="font-size: 24px;" *ngIf="showLoading"></i>
+</h1>
 <div class="row">
-    <div class="col-8 mx-auto my-2">
-        <div class="form-group form-row">
-            <label for="drpSearchBy" class="col-from-label col-3">
+    <div class="col-10 mx-auto my-2">
+        <div class="form-group form-row row">
+
+           <div class="col-2 text-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Create Project
+                </button>
+           </div>
+
+            <label for="drpSearchBy" class="col-from-label col-2 text-end">
                 Search by:
             </label>
-            <div class="col-9">
+
+            <div class="col-3">
                 <select name="SearchBy" id="drpSearchBy" class="drpSearchBy form-select" [(ngModel)]="searchBy">
                     <option selected>Open this select menu</option>
                     <option value="projectID">Project ID</option>
@@ -14,12 +25,10 @@
                     <option value="teamSize">Team Size</option>
                 </select>
             </div>
-        </div>
-        <div class="form-group form-row">
-            <label for="txtSearchText" class="col-from-label col-3">
+            <label for="txtSearchText" class="col-from-label col-1 text-end">
                 Search:
             </label>
-            <div class="col-9">
+            <div class="col-4">
                 <div class="input-group">
                     <input type="text" class="form-control" id="txtSearchText" name="SearchText" [(ngModel)]="searchText" (input)="onSearchClick()">
                     <div class="input-group-append" >
@@ -30,9 +39,7 @@
         </div>
     </div>
     <div class="col-8 mx-auto">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Create Project
-        </button>
+        
         <table class="table">
             <thead>
                 <tr>
@@ -40,15 +47,19 @@
                     <th>Project Name</th>
                     <th>Date of Start</th>
                     <th>Team Size</th>
+                    <th>Client Locations</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let projects of projects; let i = index">
-                    <td>{{projects.projectID}}</td>
-                    <td>{{projects.projectName}}</td>
-                    <td>{{projects.dateOfStart}}</td>
-                    <td>{{projects.teamSize}}</td>
+                <tr *ngFor="let project of projects; let i = index" [ngClass]="{ 'text-muted': !project.active}">
+                    <td>{{project.projectID}}</td>
+                    <td>{{project.projectName}}</td>
+                    <td>{{project.dateOfStart}}</td>
+                    <td>{{project.teamSize}}</td>
+                    <td>{{project.clientLocation.clientLocationName}}</td>
+                    <td>{{project.status}}</td>
                     <td>
                         <button class="btn btn-info me-1" (click)="onEditClick($event, i)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         <button class="btn btn-info" (click)="onDeleteClick($event, i)" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
@@ -68,7 +79,7 @@
     <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="exampleModalLabel">New Projects</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -76,8 +87,8 @@
                     <div class="form-group row">
                         <label for="txtNewProjectID" class="col-sm-12 col-from-lable">Project ID</label>
                         <div class="col-sm-10">
-                            <input type="number" id="txtNewProjectID" style="width: 100%;" class="form-control"
-                                placeholder="Project ID" [(ngModel)]="newProject.projectID">
+                            <input type="text" id="txtNewProjectID" style="width: 100%;" class="form-control"
+                                placeholder="Project ID" [(ngModel)]="newProject.projectID" required="required" pattern="^[0-9]*$">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -101,6 +112,41 @@
                                 placeholder="Team Size" [(ngModel)]="newProject.teamSize">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="" class="col-ms-4 col-from-label"></label>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <input type="checkbox" id="chkNewActive" value="true" class="form-check-input" [(ngModel)]="newProject.active">
+                                <label for="chkNewActive" class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4">Status</label>
+                        <div class="col-sm-8">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rbNewStatusInForce" class="form-check-input" name="status" value="In Force" [(ngModel)]="newProject.status">
+                                <label for="rbNewStatusInForce" class="form-check-label">In Force</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rbNewStatusSupport" class="form-check-input" name="status" value="Support" [(ngModel)]="newProject.status">
+                                <label for="rbNewStatusSupport" class="form-check-label">Support</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="drpNewClientLocation" class="col-sm-4 fol-form-label">Client Location</label>
+                        <div class="col-sm-8">
+                            <select id="drpNewClientLocation" class="form-control" name="ClientLocation" [(ngModel)]="newProject.clientLocationID">
+                                <option value="null">Please Select</option>
+                                <option *ngFor="let clientLocation of clientLocations" [value]="clientLocation.clientLocationID">
+                                  {{clientLocation.clientLocationName}}
+                                </option>
+                              </select>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
@@ -148,6 +194,38 @@
                         <div class="col-sm-10">
                             <input type="number" id="txteditTeamSize" style="width: 150px;" class="form-control"
                                 placeholder="Team Size" [(ngModel)]="editProject.teamSize">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-ms-4 col-from-label"></label>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <input type="checkbox" id="chkeditActive" value="true" class="form-check-input" [(ngModel)]="editProject.active">
+                                <label for="chkeditActive" class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="rbeditStatusInForce" class="col-sm-4">Status</label>
+                        <div class="col-sm-8">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rbNewStatusInForce" value="In Force" class="form-check-input" name="Status" [(ngModel)]="newProject.status" required="required" #newStatusInForce="ngModel">
+                                <label for="rbNewStatusInForce" class="form-check-label">In Force</label>
+                              </div>
+                
+                              <div class="form-check form-check-inline">
+                                <input type="radio" id="rbNewStatusSupport" value="Support" class="form-check-input" name="Status" [(ngModel)]="newProject.status" required="required" #newStatusSupport="ngModel">
+                                <label for="rbNewStatusSupport" class="form-check-label">Support</label>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="drpeditClientLocation" class="col-sm-4 fol-form-label">Client Location</label>
+                        <div class="col-sm-8">
+                            <select name="ClientLocation" id="drpeditClientLocation" class="form-control" [(ngModel)]="editProject.clientLocationID">
+                                <option value="null">Please Select</option>
+                                <option *ngFor="let clientLocation of clientLocations" value="clientLocation.clientLocationName">{{clientLocation.clientLocationName}}</option>
+                            </select>
                         </div>
                     </div>
                 </div>

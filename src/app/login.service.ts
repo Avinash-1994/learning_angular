@@ -27,7 +27,6 @@ export class LoginService
       {
         if (response)
         {
-          console.log(this.currentUserName )
           this.currentUserName = response.body.userName;
           sessionStorage['currentUser'] = JSON.stringify(response.body);
           sessionStorage['XSRFRequestToken'] = response.headers.get("XSRF-REQUEST-TOKEN");

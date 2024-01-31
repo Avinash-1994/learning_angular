@@ -17,14 +17,15 @@ export class gaurdService{
     // console.log(this.router.url);
 
 
-    var token = sessionStorage.getItem("currentUser")? JSON.parse(sessionStorage.getItem('currentUser') as any).token: null;
-    console.log(this.loginService.isAuthenticated())
-    if(this.loginService.isAuthenticated() || this.jwtHelperService.decodeToken(token).role == next.data['expectedRole']){
+    var token = sessionStorage.getItem("currentUser")? JSON.parse(sessionStorage.getItem('currentUser') as string).token: null;
+    
+    if(this.loginService.isAuthenticated() && this.jwtHelperService.decodeToken(token).role == next.data['expectedRole']){
       return true;
     }
-    this.router.navigateByUrl('/login')
-    return false;
-    
+    else{
+      this.router.navigate(["login"]);
+      return false;
+    }
   }
 
   
