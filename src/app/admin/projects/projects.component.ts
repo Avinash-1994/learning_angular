@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ClientLocation } from 'src/app/client-location';
 import { ClientLocationService } from 'src/app/client-location.service';
 import { Projects } from 'src/app/projects';
 import { ProjectsService } from 'src/app/projects.service';
-
+import * as $ from 'jquery'
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -22,6 +23,9 @@ export class ProjectsComponent implements OnInit
   deleteIndex: any = null;
   searchBy: string = "ProjectName";
   searchText: string = "";
+
+  @ViewChild("newForm") newForm:NgForm | any = null;
+  @ViewChild("editForm") editForm:NgForm | any = null;
 
   constructor(private projectsService: ProjectsService, private clientLocationsService: ClientLocationService)
   {
@@ -45,8 +49,13 @@ export class ProjectsComponent implements OnInit
     );
   }
 
+  onNewClick(event:any){
+    this.newForm.resetForm()
+  }
+
   onSaveClick()
   {
+   if(this.newForm.valid){
     this.newProject.clientLocation.clientLocationID = 0;
     this.projectsService.insertProject(this.newProject).subscribe((response) =>
     {
@@ -70,15 +79,20 @@ export class ProjectsComponent implements OnInit
       this.newProject.active = false;
       this.newProject.clientLocationID = null;
       this.newProject.status = null;
+
+      $('.newFormCancel').trigger("click");
     }, (error) =>
     {
       console.log(error);
     });
+   }
   }
 
   onEditClick(event: any, index: number)
   {
-    this.editProject.projectID = this.projects[index].projectID;
+    this.editForm.resetForm();
+    setTimeout(()=>{
+      this.editProject.projectID = this.projects[index].projectID;
     this.editProject.projectName = this.projects[index].projectName;
     this.editProject.dateOfStart = this.projects[index].dateOfStart.split("/").reverse().join("-"); //yyyy-MM-dd
     this.editProject.teamSize = this.projects[index].teamSize;
@@ -87,35 +101,39 @@ export class ProjectsComponent implements OnInit
     this.editProject.clientLocation = this.projects[index].clientLocation;
     this.editProject.status = this.projects[index].status;
     this.editIndex = index;
+    }, 200)
   }
 
-  onUpdateClick()
-  {
-    this.projectsService.updateProject(this.editProject).subscribe((response: Projects) =>
-    {
-      var p: Projects = new Projects();
-      p.projectID = response.projectID;
-      p.projectName = response.projectName;
-      p.dateOfStart = response.dateOfStart;
-      p.teamSize = response.teamSize;
-      p.clientLocation = response.clientLocation;
-      p.active = response.active;
-      p.clientLocationID = response.clientLocationID;
-      p.status = response.status;
-      this.projects[this.editIndex] = p;
-
-      this.editProject.projectID = null;
-      this.editProject.projectName = null;
-      this.editProject.dateOfStart = null;
-      this.editProject.teamSize = null;
-      this.newProject.active = false;
-      this.newProject.clientLocationID = null;
-      this.newProject.status = null;
-    },
-      (error) =>
-      {
-        console.log(error);
-      });
+  onUpdateClick(){
+    if(this.editForm.valid){
+      this.projectsService.updateProject(this.editProject).subscribe({
+        next:(response: Projects) =>{
+          var p: Projects = new Projects();
+          p.projectID = response.projectID;
+          p.projectName = response.projectName;
+          p.dateOfStart = response.dateOfStart;
+          p.teamSize = response.teamSize;
+          p.clientLocation = response.clientLocation;
+          p.active = response.active;
+          p.clientLocationID = response.clientLocationID;
+          p.status = response.status;
+          this.projects[this.editIndex] = p;
+    
+          this.editProject.projectID = null;
+          this.editProject.projectName = null;
+          this.editProject.dateOfStart = null;
+          this.editProject.teamSize = null;
+          this.newProject.active = false;
+          this.newProject.clientLocationID = null;
+          this.newProject.status = null;
+          $('#editFormCancel').trigger('click')
+        },
+        error:(error) =>{
+          console.log(error);
+        }
+      })
+    }
+      
   }
 
   onDeleteClick(event: any, index: number)
