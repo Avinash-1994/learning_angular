@@ -80,7 +80,7 @@ export class ProjectsComponent implements OnInit
       this.newProject.clientLocationID = null;
       this.newProject.status = null;
 
-      $('.newFormCancel').trigger("click");
+      $('#newFormCancel').trigger("click");
     }, (error) =>
     {
       console.log(error);

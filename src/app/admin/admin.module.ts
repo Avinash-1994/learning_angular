@@ -6,6 +6,9 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 import { DashboardService } from '../dashboard.service';
 import { ProjectsComponent } from './projects/projects.component';
 import { FormsModule } from '@angular/forms';
+import { TeamSizeValidatorDirective } from '../team-size-validator.directive';
+import { ClientLocationStatusValidatorDirective } from '../client-location-status-validator.directive';
+
 
 
 
@@ -14,7 +17,9 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     AboutComponent,
     MyProfileComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    TeamSizeValidatorDirective,
+    ClientLocationStatusValidatorDirective
   ],
   imports: [
     CommonModule,
@@ -24,7 +29,9 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     AboutComponent,
     MyProfileComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    TeamSizeValidatorDirective,
+    ClientLocationStatusValidatorDirective
   ],
   providers:[
     DashboardService
