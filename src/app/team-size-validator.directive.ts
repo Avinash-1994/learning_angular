@@ -19,7 +19,7 @@ export class TeamSizeValidatorDirective implements Validator {
       return null;
      }
      else{
-      return {divisible:{valid:false}};
+      return { divisible: { valid: false } }; 
      }
   }
 

@@ -5,18 +5,21 @@ import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@an
   selector: '[appClientLocationStatusValidator]',
   providers:[{provide:NG_VALIDATORS, useExisting:ClientLocationStatusValidatorDirective, multi:true}]
 })
-export class ClientLocationStatusValidatorDirective implements Validator{
+export class ClientLocationStatusValidatorDirective implements Validator {
+  constructor() {
+  }
 
-  constructor() { }
-  validate(control: AbstractControl<any, any>): ValidationErrors | null {
+  validate(control: AbstractControl): ValidationErrors | null {
     let isValid = true;
-    if(control.value.ClientLocation == 6 && control.value.status == "Support"){
-      isValid=false
+    if (control.value.ClientLocation == 6 && control.value.Status == "Support") {
+      isValid = false; //indicates invalid
     }
-    if(isValid == true){
-      return null;
-    }else{
-      return {clientLocationStatus:{valid:false}}
+
+    if (isValid == true) {
+      return null; //valid
+    }
+    else {
+      return { clientLocationStatus: { valid: false } }; //invalid
     }
   }
 

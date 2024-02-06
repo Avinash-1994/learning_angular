@@ -13,11 +13,10 @@ function getProjects(req, res) {
 function postProjects(req, res) {
   console.log(req.method, req.url);
   projects = JSON.parse(fs.readFileSync(jsonfile)).projects;
-  
+
     if (req.body.clientLocationID)
     req.body.clientLocation = JSON.parse(fs.readFileSync(jsonfile)).clientLocations.find(c => c.clientLocationID == req.body.clientLocationID);
 
-  
   projects.push(req.body);
   console.log("Response: ", projects);
   fs.writeFileSync(
@@ -82,7 +81,6 @@ function deleteProjects(req, res) {
 //GET /api/projects/search/:searchby/:searchtext
 function searchProjects(req, res) {
   console.log(req.method, req.url);
-  console.log(req.params);
   projects = JSON.parse(fs.readFileSync(jsonfile, "utf8")).projects;
   req.params.searchtext = (req.params.searchtext || "").toUpperCase();
   req.params.searchby = helpers.toCamelCase(req.params.searchby || "");
@@ -96,8 +94,26 @@ function searchProjects(req, res) {
   res.send(helpers.toCamel(projects));
 }
 
+//GET /api/projects/searchbyprojectid/:ProjectID
+function getProjectByProjectID(req, res) {
+  console.log(req.method, req.url);
+  console.log(req.params);
+  projects = JSON.parse(fs.readFileSync(jsonfile, "utf8")).projects;
+  console.log(req.params);
+  projects = projects.find((project) => {
+    return project["projectID"] == req.params.ProjectID;
+  });
+  console.log("Response: ", projects);
+  if (projects) {
+    res.send(helpers.toCamel(projects));
+  } else {
+    res.send(projects);
+  }
+}
+
 exports.getProjects = getProjects;
 exports.postProjects = postProjects;
 exports.putProjects = putProjects;
 exports.deleteProjects = deleteProjects;
 exports.searchProjects = searchProjects;
+exports.getProjectByProjectID = getProjectByProjectID;

@@ -4,7 +4,7 @@ import { ClientLocation } from 'src/app/client-location';
 import { ClientLocationService } from 'src/app/client-location.service';
 import { Projects } from 'src/app/projects';
 import { ProjectsService } from 'src/app/projects.service';
-import * as $ from 'jquery'
+import * as $ from 'jquery';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
