@@ -18,9 +18,7 @@ export class ProjectsService
   getAllProjects(): Observable<Projects[]>
   {
     return this.httpClient.get<Projects[]>(this.urlPrefix + "/api/projects", { responseType: "json" })
-      .pipe(map(
-        (data: Projects[]) =>
-        {
+      .pipe(map((data: Projects[]) =>{
           for (let i = 0; i < data.length; i++)
           {
             // data[i].teamSize = data[i].teamSize * 100;
@@ -29,6 +27,11 @@ export class ProjectsService
         }
       ));
   }
+
+  getProjectByProjectID(ProjectID:number):Observable<Projects>{
+    return this.httpClient.get<Projects>(this.urlPrefix + "/api/projects/searchbyprojectid/" + ProjectID, {responseType:"json"})
+  }
+
 
   insertProject(newProject: Projects): Observable<Projects>
   {

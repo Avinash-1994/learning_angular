@@ -6,10 +6,11 @@ import { AppComponent } from './app.component';
 import { AdminModule } from './admin/admin.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtIntercepterService } from './jwt-intercepter.service';
 import { JwtUnAuthorizedInterceptorService } from './jwt-un-authorized-interceptor.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 
@@ -18,8 +19,7 @@ import { JwtModule } from '@auth0/angular-jwt';
   declarations: [
     AppComponent,
     LoginComponent,
-    
-    
+    SignUpComponent, 
   ],
   imports: [
     BrowserModule,
@@ -27,6 +27,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     AdminModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () =>
