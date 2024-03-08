@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Country } from './country';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountriesService {
+  userPrefix:string = "http://localhost:9090" 
+  constructor(private httpClient: HttpClient) { }
 
-  constructor() { }
-
-  getCountries():Country[]{
-    return [
-      new Country (1, "India"),
-      new Country (2, "UK"),
-      new Country (3, "USA"),
-      new Country (4, "Japan")
-    ]
+  getCountries():Observable<Country[]>{
+    return this.httpClient.get<Country[]>(this.userPrefix + "/api/countries", {responseType: "json"})
   }
 }
